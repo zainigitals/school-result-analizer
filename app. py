@@ -1,0 +1,54 @@
+import streamlit as st
+
+# --- Page Setup ---
+st.set_page_config(page_title="School Result Portal", page_icon="🎓")
+
+# --- Database (Dummy Data) ---
+students_data = {
+    "101": {"name": "Ali", "class": "5th", "marks": {"Math": 90, "English": 85, "Science": 70}},
+    "102": {"name": "Ahmed", "class": "8th", "marks": {"Math": 50, "History": 60, "Physics": 55}},
+    "103": {"name": "Sara", "class": "5th", "marks": {"Math": 95, "English": 92, "Science": 88}},
+}
+
+# --- App Design ---
+st.title("🎓 School Online Result System")
+st.write("Bise Multan Style Result Checking Portal")
+
+# Input Box
+roll_no = st.text_input("Apna Roll Number darj karein:", placeholder="Example: 101")
+
+# Button
+if st.button("Check Result"):
+    if roll_no in students_data:
+        student = students_data[roll_no]
+        
+        # Student Info
+        st.success("Record Found! ✅")
+        st.subheader(f"Student Name: {student['name']}")
+        st.write(f"**Class:** {student['class']}")
+        
+        # Marks Table show karna
+        st.write("--- Marks Sheet ---")
+        
+        # Dictionary se Marks nikal kar show karna
+        total_marks = 0
+        marks_dict = student['marks']
+        
+        for subject, marks in marks_dict.items():
+            st.write(f"📘 **{subject}:** {marks}")
+            total_marks += marks
+            
+        st.write("---")
+        st.metric(label="Total Marks Obtain", value=total_marks)
+        
+        # AI Logic (Simple logic abhi ke liye)
+        if total_marks > 250:
+             st.balloons() # Screen par balloons urenge
+             st.info("AI Analysis: Excellent Performance! Keep it up.")
+        else:
+             st.warning("AI Analysis: Needs improvement in Science subjects.")
+             
+    elif roll_no == "":
+        st.warning("Please enter a Roll Number first.")
+    else:
+        st.error("❌ Record nahi mila. Kripya sahi Roll Number likhein.")
